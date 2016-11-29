@@ -13,7 +13,7 @@
 
 // Format default string for outputing a device entry. The following parameters will be used in the following order:
 // Index, Device Friendly Name
-#define DEVICE_OUTPUT_FORMAT "Audio Device %d: %ws"
+#define DEVICE_OUTPUT_FORMAT "EP#%d: %ws state %d\tisdefault %d\tdescription %ws\tfriendlyname %ws\tid %ws"
 
 typedef struct TGlobalState
 {
@@ -123,7 +123,7 @@ void createDeviceEnumerator(TGlobalState* state)
 // Prepare the device enumerator
 void prepareDeviceEnumerator(TGlobalState* state)
 {
-	state->hr = state->pEnum->EnumAudioEndpoints(eRender, state->deviceStateFilter, &state->pDevices);
+	state->hr = state->pEnum->EnumAudioEndpoints(eCapture, state->deviceStateFilter, &state->pDevices);
 	if SUCCEEDED(state->hr)
 	{
 		enumerateOutputDevices(state);
@@ -143,7 +143,7 @@ void enumerateOutputDevices(TGlobalState* state)
 
 		// Get default device
 		IMMDevice* pDefaultDevice;
-		state->hr = state->pEnum->GetDefaultAudioEndpoint(eRender, eMultimedia, &pDefaultDevice);
+		state->hr = state->pEnum->GetDefaultAudioEndpoint(eCapture, eMultimedia, &pDefaultDevice);
 		if (SUCCEEDED(state->hr))
 		{
 			
